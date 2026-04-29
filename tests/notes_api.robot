@@ -18,7 +18,7 @@ GET Should Return Notes List
 
 POST Without Name Should Return 400
     ${body}=    Create Dictionary    foo=bar
-    ${resp}=    POST    ${BASE_URL}    json=${body}
+    ${resp}=    POST    ${BASE_URL}    json=${body}    expected_status=any
     Should Be Equal As Integers    ${resp.status_code}    400
 
 POST With Name Should Return 201
@@ -27,10 +27,11 @@ POST With Name Should Return 201
     Should Be Equal As Integers    ${resp.status_code}    201
 
 DELETE Without Name Should Return 400
-    ${resp}=    DELETE    ${BASE_URL}
+    ${resp}=    DELETE    ${BASE_URL}    expected_status=any
     Should Be Equal As Integers    ${resp.status_code}    400
 
 DELETE Existing Note Should Return 200 Or 404
-    ${resp}=    DELETE    ${BASE_URL}?name=test-note
+    ${params}=    Create Dictionary    name=test-note
+    ${resp}=    DELETE    ${BASE_URL}    params=${params}    expected_status=any
     ${valid_codes}=    Create List    200    404
     List Should Contain Value    ${valid_codes}    ${resp.status_code}
