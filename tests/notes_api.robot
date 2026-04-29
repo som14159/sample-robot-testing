@@ -33,5 +33,4 @@ DELETE Without Name Should Return 400
 DELETE Existing Note Should Return 200 Or 404
     ${params}=    Create Dictionary    name=test-note
     ${resp}=    DELETE    ${BASE_URL}    params=${params}    expected_status=any
-    ${valid_codes}=    Create List    200    404
-    List Should Contain Value    ${valid_codes}    ${resp.status_code}
+    Should Be True    ${resp.status_code} == 200 or ${resp.status_code} == 404
