@@ -26,6 +26,15 @@ POST With Name Should Return 201
     ${resp}=    POST    ${BASE_URL}    json=${body}
     Should Be Equal As Integers    ${resp.status_code}    201
 
+POST Should Create Around 10 Notes
+    FOR    ${index}    IN RANGE    10
+        ${name}=    Set Variable    bulk-note-${index}
+        ${content}=    Set Variable    content-${index}
+        ${body}=    Create Dictionary    name=${name}    content=${content}
+        ${resp}=    POST    ${BASE_URL}    json=${body}
+        Should Be Equal As Integers    ${resp.status_code}    201
+    END
+
 DELETE Without Name Should Return 400
     ${resp}=    DELETE    ${BASE_URL}    expected_status=any
     Should Be Equal As Integers    ${resp.status_code}    400
