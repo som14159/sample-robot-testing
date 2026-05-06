@@ -16,6 +16,24 @@ GET Should Return Notes List
     ${resp}=    GET    ${BASE_URL}
     Should Be Equal As Integers    ${resp.status_code}    200
 
+GET Should Include Mongo Seed Data
+    ${resp}=    GET    ${BASE_URL}
+    Should Be Equal As Integers    ${resp.status_code}    200
+    ${notes}=    Set Variable    ${resp.json()}
+    Length Should Be    ${notes}    16
+
+    ${names}=    Create List
+    FOR    ${note}    IN    @{notes}
+        Dictionary Should Contain Key    ${note}    name
+        Dictionary Should Contain Key    ${note}    content
+        Append To List    ${names}    ${note}[name]
+    END
+
+    List Should Contain Value    ${names}    Housewarming Tasks
+    FOR    ${index}    IN RANGE    10
+        List Should Contain Value    ${names}    bulk-note-${index}
+    END
+
 POST Without Name Should Return 400
     ${body}=    Create Dictionary    foo=bar
     ${resp}=    POST    ${BASE_URL}    json=${body}    expected_status=any
