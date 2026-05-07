@@ -4,6 +4,7 @@ Library    Collections
 
 *** Variables ***
 ${BASE_URL}    %{BASE_URL}
+${EXPECTED_NOTES_COUNT}    %{EXPECTED_NOTES_COUNT}
 
 *** Test Cases ***
 OPTIONS Should Return CORS Headers
@@ -15,6 +16,14 @@ OPTIONS Should Return CORS Headers
 GET Should Return Notes List
     ${resp}=    GET    ${BASE_URL}
     Should Be Equal As Integers    ${resp.status_code}    200
+
+GET Should Match Mongo Notes Count
+    ${resp}=    GET    ${BASE_URL}
+    Should Be Equal As Integers    ${resp.status_code}    200
+    ${notes}=    Set Variable    ${resp.json()}
+    ${actual_count}=    Get Length    ${notes}
+    ${expected_count}=    Convert To Integer    ${EXPECTED_NOTES_COUNT}
+    Should Be Equal As Integers    ${actual_count}    ${expected_count}
 
 GET Should Include Existing Seeded Notes
     ${resp}=    GET    ${BASE_URL}
