@@ -16,6 +16,16 @@ GET Should Return Notes List
     ${resp}=    GET    ${BASE_URL}
     Should Be Equal As Integers    ${resp.status_code}    200
 
+GET Should Include Existing Seeded Notes
+    ${resp}=    GET    ${BASE_URL}
+    Should Be Equal As Integers    ${resp.status_code}    200
+    ${notes}=    Set Variable    ${resp.json()}
+    ${names}=    Evaluate    [note.get('name') for note in $notes]
+    List Should Contain Value    ${names}    Housewarming Tasks
+    List Should Contain Value    ${names}    bulk-note-0
+    List Should Contain Value    ${names}    bulk-note-9
+    List Should Contain Value    ${names}    test-note
+
 POST Without Name Should Return 400
     ${body}=    Create Dictionary    foo=bar
     ${resp}=    POST    ${BASE_URL}    json=${body}    expected_status=any
