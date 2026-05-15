@@ -22,3 +22,16 @@ robot tests/notes_api.robot
 ## GitHub Actions
 
 Provide `BASE_URL` as an environment variable or secret in your workflow.
+
+## MongoDB schema (inferred)
+
+Database: `notes_db`  
+Collection: `notes_collection`
+
+> Schema is inferred from a sample of documents and may not represent all fields.
+
+| Field | BSON type(s) | Notes |
+|---|---|---|
+| `_id` | `ObjectId` | MongoDB document id |
+| `name` | `String` | Note title/name |
+| `content` | `String` | Note content |
